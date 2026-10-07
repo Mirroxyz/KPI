@@ -1,50 +1,62 @@
 erDiagram
     MEMBER {
-        int member_id PK
+        string member_id PK
         string full_name
         string email UK
         datetime registered_at
     }
+
     AUTHOR {
-        int author_id PK
+        string author_id PK
         string full_name
     }
+
     BOOK {
-        int book_id PK
+        string book_id PK
         string isbn UK
         string title
         int publication_year
         string publisher
-        string inventory_code
-        string status
     }
+
     CATEGORY {
-        int category_id PK
+        string category_id PK
         string name UK
     }
+
+    BOOK_COPY {
+        string copy_id PK
+        string book_id FK
+        string inventory_code UK
+        string status
+        date acquired_at
+    }
+
     LOAN {
-        int loan_id PK
-        int book_id FK
-        int member_id FK
+        string loan_id PK
+        string copy_id FK
+        string member_id FK
         datetime borrowed_at
         datetime due_at
         datetime returned_at
     }
+
     RESERVATION {
-        int reservation_id PK
-        int book_id FK
-        int member_id FK
+        string reservation_id PK
+        string book_id FK
+        string member_id FK
         datetime reserved_at
         string status
     }
+
+    AUTHOR }|--|{ BOOK : writes
     AUTHOR_BOOK {
-        int author_id FK
-        int book_id FK
+        string author_id FK
+        string book_id FK
     }
-    AUTHOR }|--|{ AUTHOR_BOOK : writes
-    AUTHOR_BOOK }|--|{ BOOK : contains
     CATEGORY }o--o{ BOOK : classifies
-    BOOK ||--o{ LOAN : borrowed_as
+    BOOK ||--o{ BOOK_COPY : has
     MEMBER ||--o{ LOAN : makes
+    BOOK_COPY ||--o{ LOAN : appears_in
     MEMBER ||--o{ RESERVATION : places
     BOOK ||--o{ RESERVATION : receives
