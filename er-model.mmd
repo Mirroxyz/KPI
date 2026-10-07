@@ -50,10 +50,6 @@ erDiagram
     }
 
     AUTHOR }|--|{ BOOK : writes
-    AUTHOR_BOOK {
-        string author_id FK
-        string book_id FK
-    }
     CATEGORY }o--o{ BOOK : classifies
     BOOK ||--o{ BOOK_COPY : has
     MEMBER ||--o{ LOAN : makes
