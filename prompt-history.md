@@ -92,7 +92,7 @@ erDiagram
 - `BOOK_COPY` має власний `copy_id`, інвентарний код і статус;
 - `LOAN` пов'язаний із конкретним `BOOK_COPY`;
 - один примірник може мати багато історичних видач, але не більше однієї активної;
-- зв'язки `AUTHOR—BOOK` і `CATEGORY—BOOK` є чистими M:N;
+- зв'язки `AUTHOR-BOOK` і `CATEGORY-BOOK` є чистими M:N;
 - ER-модель не повинна містити фізичну схему БД або зайві сполучні сутності.
 
 ---
@@ -127,8 +127,8 @@ erDiagram
 **Результат перевірки:**
 
 - у моделі сім сутностей, описаних у специфікації;
-- `BOOK—BOOK_COPY`, `MEMBER—LOAN`, `BOOK_COPY—LOAN`, `MEMBER—RESERVATION` і `BOOK—RESERVATION` мають правильні зв'язки 1:N;
-- `AUTHOR—BOOK` і `CATEGORY—BOOK` залишилися чистими M:N;
+- `BOOK-BOOK_COPY`, `MEMBER-LOAN`, `BOOK_COPY-LOAN`, `MEMBER-RESERVATION` і `BOOK-RESERVATION` мають правильні зв'язки 1:N;
+- `AUTHOR-BOOK` і `CATEGORY-BOOK` залишилися чистими M:N;
 - PK і FK мають узгоджений тип `string`;
 - фізична схема БД, SQL DDL та ORM навмисно не створювалися;
 - `er-model.svg` згенеровано з `er-model.mmd`;

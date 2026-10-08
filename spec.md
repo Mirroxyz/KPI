@@ -4,55 +4,55 @@
 
 Усі ідентифікатори мають тип `string` і є стабільними первинними ключами.
 
-### MEMBER — читач
+### MEMBER - читач
 
-- `member_id` — PK, ідентифікатор читача;
-- `full_name` — повне ім'я;
-- `email` — електронна адреса, унікальна для читача;
-- `registered_at` — дата й час реєстрації.
+- `member_id` - PK, ідентифікатор читача;
+- `full_name` - повне ім'я;
+- `email` - електронна адреса, унікальна для читача;
+- `registered_at` - дата й час реєстрації.
 
-### AUTHOR — автор
+### AUTHOR - автор
 
-- `author_id` — PK;
-- `full_name` — ім'я автора.
+- `author_id` - PK;
+- `full_name` - ім'я автора.
 
-### BOOK — бібліографічний опис книжки
+### BOOK - бібліографічний опис книжки
 
-- `book_id` — PK;
-- `isbn` — ISBN, унікальний, якщо він існує;
-- `title` — назва;
-- `publication_year` — рік публікації;
-- `publisher` — видавець.
+- `book_id` - PK;
+- `isbn` - ISBN, унікальний, якщо він існує;
+- `title` - назва;
+- `publication_year` - рік публікації;
+- `publisher` - видавець.
 
-### CATEGORY — тематична категорія
+### CATEGORY - тематична категорія
 
-- `category_id` — PK;
-- `name` — назва категорії, унікальна.
+- `category_id` - PK;
+- `name` - назва категорії, унікальна.
 
-### BOOK_COPY — фізичний примірник
+### BOOK_COPY - фізичний примірник
 
-- `copy_id` — PK;
-- `book_id` — FK до `BOOK.book_id`;
-- `inventory_code` — інвентарний код, унікальний;
-- `status` — стан примірника (`available`, `loaned`, `repair`, `lost`);
-- `acquired_at` — дата надходження.
+- `copy_id` - PK;
+- `book_id` - FK до `BOOK.book_id`;
+- `inventory_code` - інвентарний код, унікальний;
+- `status` - стан примірника (`available`, `loaned`, `repair`, `lost`);
+- `acquired_at` - дата надходження.
 
-### LOAN — видача
+### LOAN - видача
 
-- `loan_id` — PK;
-- `copy_id` — FK до `BOOK_COPY.copy_id`;
-- `member_id` — FK до `MEMBER.member_id`;
-- `borrowed_at` — дата й час видачі;
-- `due_at` — запланований строк повернення;
-- `returned_at` — фактичний час повернення, nullable для активної видачі.
+- `loan_id` - PK;
+- `copy_id` - FK до `BOOK_COPY.copy_id`;
+- `member_id` - FK до `MEMBER.member_id`;
+- `borrowed_at` - дата й час видачі;
+- `due_at` - запланований строк повернення;
+- `returned_at` - фактичний час повернення, nullable для активної видачі.
 
-### RESERVATION — бронювання
+### RESERVATION - бронювання
 
-- `reservation_id` — PK;
-- `book_id` — FK до `BOOK.book_id`;
-- `member_id` — FK до `MEMBER.member_id`;
-- `reserved_at` — дата й час бронювання;
-- `status` — стан бронювання (`active`, `fulfilled`, `cancelled`, `expired`).
+- `reservation_id` - PK;
+- `book_id` - FK до `BOOK.book_id`;
+- `member_id` - FK до `MEMBER.member_id`;
+- `reserved_at` - дата й час бронювання;
+- `status` - стан бронювання (`active`, `fulfilled`, `cancelled`, `expired`).
 
 ## Зв'язки та кардинальності
 
@@ -66,10 +66,10 @@
 
 ## Критерії прийняття
 
-1. Mermaid-діаграма містить рівно сім сутностей зі специфікації й не містить асоціативних сутностей або фізичних таблиць для чистих M:N-зв'язків `AUTHOR—BOOK` та `CATEGORY—BOOK`.
+1. Mermaid-діаграма містить рівно сім сутностей зі специфікації й не містить асоціативних сутностей або фізичних таблиць для чистих M:N-зв'язків `AUTHOR-BOOK` та `CATEGORY-BOOK`.
 2. Кожна сутність має один PK типу `string`; кожен FK також має тип `string` і посилається на PK з тим самим іменем і типом.
 3. Назви сутностей, полів і зв'язків у Mermaid збігаються зі специфікацією (зокрема `copy_id`, `inventory_code`, `borrowed_at`, `due_at`, `returned_at`).
-4. Кардинальності на діаграмі відповідають словесному опису: `BOOK—BOOK_COPY`, `MEMBER—LOAN`, `BOOK_COPY—LOAN`, `MEMBER—RESERVATION`, `BOOK—RESERVATION` — 1:N; два зв'язки з `BOOK` — M:N.
+4. Кардинальності на діаграмі відповідають словесному опису: `BOOK-BOOK_COPY`, `MEMBER-LOAN`, `BOOK_COPY-LOAN`, `MEMBER-RESERVATION`, `BOOK-RESERVATION` - 1:N; два зв'язки з `BOOK` - M:N.
 5. Дані відповідають 3NF: атрибути описують свою сутність, повторювані групи винесені в окремі сутності, а похідні або дубльовані атрибути не зберігаються.
 6. Рендер `er-model.svg` відтворює саме вміст `er-model.mmd`, а не окрему ручну схему.
 7. Для одного `BOOK_COPY` допускається багато історичних `LOAN`, але одночасно може існувати не більше однієї видачі з `returned_at = null`.
