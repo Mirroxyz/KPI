@@ -1,0 +1,15 @@
+%% Лабораторна робота №2 - Use Case діаграма
+flowchart LR
+    User["User"]
+    Member["Member"]
+    Librarian["Librarian"]
+    User -->|generalization| Member
+    User -->|generalization| Librarian
+    subgraph System["City Library System"]
+        Auth("(Authenticate)")
+        Borrow("(Borrow Book)")
+        Return("(Return Book)")
+        Pay("(Pay Fine)")
+        Borrow -. "include" .-> Auth
+        Pay -. "extend" .-> Return
+    end
