@@ -6,6 +6,8 @@ flowchart LR
 
     User -->|generalization| Member
     User -->|generalization| Librarian
+    User --> Search
+    User --> Auth
 
     subgraph System["City Library System"]
         Auth("(Authenticate)")
@@ -17,10 +19,10 @@ flowchart LR
         Notify("(Send Notification)")
         Fulfill("(Fulfill Reservation)")
 
-        Member --> Search
         Member --> Reserve
         Member --> Borrow
         Member --> Return
+        Member --> Pay
 
         Librarian --> Borrow
         Librarian --> Return
