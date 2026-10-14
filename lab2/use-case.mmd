@@ -3,6 +3,7 @@ flowchart LR
     User["User"]
     Member["Member"]
     Librarian["Librarian"]
+    EmailService["EmailService"]
     User -->|generalization| Member
     User -->|generalization| Librarian
     subgraph System["City Library System"]
@@ -10,6 +11,8 @@ flowchart LR
         Borrow("(Borrow Book)")
         Return("(Return Book)")
         Pay("(Pay Fine)")
+        Notify("(Send Notification)")
         Borrow -. "include" .-> Auth
-        Pay -. "extend" .-> Return
+        Return -. "extend" .-> Pay
+        EmailService --> Notify
     end
