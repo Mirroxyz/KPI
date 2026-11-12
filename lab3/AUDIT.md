@@ -1,42 +1,37 @@
-# Аудит Лабораторної роботи №3
+# Аудит Lab 3
 
-## Узгодження з ER-моделлю
+## Трасування до ER-моделі й Gherkin
 
-| Учасник діаграми | ER-сутність або сервіс | Перевірка |
-|---|---|---|
-| `Member` / `MemberRepository` | `MEMBER` | бронювання належить конкретному читачеві через `member_id` |
-| `BookRepository` | `BOOK` | бронювання стосується бібліографічного запису через `book_id` |
-| `ReservationRepository` | `RESERVATION` | створюється активний запис із `member_id` і `book_id` |
-| `AuthService` | сервіс Use Case `Authenticate` | зовнішня передумова, не нова ER-сутність |
-| `ReservationService`, `Reservation UI` | application/boundary components | не є таблицями, координують UC |
+| Перевірка | Доказ |
+|---|---|
+| `Member` / `MemberRepository` відповідають `MEMBER` | `memberId` проходить до `createActiveReservation()` |
+| `BookRepository` відповідає `BOOK` | `findAvailableBook(bookId)` повертає доступний `BOOK` |
+| `ReservationRepository` відповідає `RESERVATION` | створюється `status = active` з `memberId` і `bookId` |
+| Сценарій 3 | доступна `BOOK` → `createActiveReservation()` → підтвердження |
+| Сценарій 4 | `outstandingFine` → `rejectReservation()` → сума показана читачу |
 
-`BOOK_COPY`, `LOAN`, `AUTHOR` і `CATEGORY` не включені, бо жоден крок обраних
-сценаріїв не працює з ними. `EmailService` також не включений: він потрібен
-сценарію виконання бронювання, а не створення бронювання.
+`AuthService` і `ReservationService` є компонентами поведінкової моделі, а не
+новими таблицями. `BOOK_COPY`, `LOAN`, `AUTHOR`, `CATEGORY` та `EmailService`
+поза межами обраного UC.
 
-## Узгодження з Gherkin
+## Топ-3 розбіжності
 
-- Сценарій `reserve-success.mmd` відтворює авторизовану сесію, доступну
-  `BOOK` і створення активного `RESERVATION` зі сценарію 3.
-- Сценарій `reserve-unpaid-fine.mmd` відтворює авторизовану сесію, наявність
-  несплаченого штрафу, відмову та показ суми зі сценарію 4.
-- Перевірка штрафу відбувається до `createActiveReservation()`, тому в
-  негативній гілці виклик збереження не виконується.
-- Activation bars `Reservation UI` і `ReservationService` охоплюють умовні
-  фрагменти та завершуються після них; вкладені репозиторії активні лише під
-  час власних викликів.
+1. **Неповний вхід:** первинний spec не містив повного acceptance-контракту.
+   Критерії, межі й команда рендера додані до `spec.md` у коміті
+   [`1775d43`](https://github.com/Mirroxyz/KPI/commit/1775d43).
+2. **Неявна гарантія запису:** діаграми не підкреслювали момент persistence.
+   Додано примітку після `createActiveReservation()` та примітку про відсутність
+   виклику repository у штрафній гілці в коміті
+   [`78dca1f`](https://github.com/Mirroxyz/KPI/commit/78dca1f).
+3. **Відсутній структурований AI-слід:** prompt history був лише одним
+   підсумковим файлом. Додано дослівний запит і студентський review feedback у
+   [`ai/`](./ai), а ADR і defense прив'язали їх до комітів у `1775d43`.
 
-## Топ-3 розбіжності та рішення
+## Перевірка activation bars
 
-1. **Штраф не має сутності `FINE` в ER-моделі.** У sequence-діаграмі він
-   представлений як значення стану, яке повертає `MemberRepository`, без
-   вигадування таблиці. Наступна ітерація моделі має додати `FINE`, якщо
-   потрібні історія платежів і незалежний життєвий цикл штрафу.
-2. **Авторизація є Use Case, а не ER-сутність.** `AuthService` додано як
-   сервіс, бо сценарії 3–4 мають `Given` про авторизовану сесію, а REQ-01
-   перевіряється окремим сценарієм 1 у Лабораторній роботі №2.
-3. **Доступність книжки не є полем `BOOK`.** Діаграма викликає
-   `findAvailableBook()` як доменну перевірку, не додаючи до `BOOK` атрибут
-   `available`: фактичний стан фонду визначається пов'язаними
-   `BOOK_COPY`/`RESERVATION` у відповідних UC, але ці кроки поза обраним UC.
+`Reservation UI` і `ReservationService` активуються до `alt` і деактивуються
+після нього. `MemberRepository`, `BookRepository` та
+`ReservationRepository` мають вкладені activation bars лише на час власних
+викликів. У негативній гілці `reserve-unpaid-fine.mmd` немає виклику
+`createActiveReservation()`.
 
