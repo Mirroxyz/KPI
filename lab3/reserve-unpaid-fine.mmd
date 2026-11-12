@@ -1,0 +1,41 @@
+sequenceDiagram
+    autonumber
+    actor Member
+    participant UI as Reservation UI
+    participant Auth as AuthService
+    participant Service as ReservationService
+    participant Members as MemberRepository
+    participant Books as BookRepository
+    participant Reservations as ReservationRepository
+
+    Member->>UI: submitReservation(bookId)
+    activate UI
+    UI->>Service: placeReservation(memberId, bookId)
+    activate Service
+    Service->>Auth: validateSession(memberId)
+    activate Auth
+    Auth-->>Service: authorized(session)
+    deactivate Auth
+    Service->>Members: getMemberStatus(memberId)
+    activate Members
+    Members-->>Service: member + outstandingFine(UAH)
+    deactivate Members
+
+    alt outstanding fine exists
+        Service-->>UI: rejectReservation(reason, fineAmount)
+        UI-->>Member: displayOutstandingFine(fineAmount)
+    else no outstanding fine
+        Service->>Books: findAvailableBook(bookId)
+        activate Books
+        Books-->>Service: BOOK(bookId, available = true)
+        deactivate Books
+        Service->>Reservations: createActiveReservation(memberId, bookId)
+        activate Reservations
+        Reservations-->>Service: RESERVATION(reservationId, active)
+        deactivate Reservations
+        Service-->>UI: reservationCreated(reservationId)
+        UI-->>Member: displayReservationResult()
+    end
+    deactivate Service
+    deactivate UI
+
