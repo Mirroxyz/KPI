@@ -11,9 +11,9 @@ Mermaid sequence-діаграмах, узгоджених із ER-моделлю
 
 | # | Що було не так проти `spec.md` | Мій слід | Виправлення |
 |---|---|---|---|
-| 1 | Початковий spec описував сценарії, але не фіксував повні критерії, out-of-scope і команду рендера. | [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) | [`1775d43`](https://github.com/Mirroxyz/KPI/commit/1775d43) |
-| 2 | Діаграми не показували явно, що запис `RESERVATION` відбувається лише після перевірок, а негативна гілка не викликає repository. | [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) | [`78dca1f`](https://github.com/Mirroxyz/KPI/commit/78dca1f) |
-| 3 | Один журнал prompt history не був повним слідом у `ai/`, а defense не давав рев'юеру короткої точки входу з SHA. | [`ai/01-request.md`](./ai/01-request.md), [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) | [`1775d43`](https://github.com/Mirroxyz/KPI/commit/1775d43) |
+| 1 | AI-вихід не містив явної примітки, що persistence відбувається лише після session, member і book checks. | [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) · критерій у `spec.md` | [`066b9d6`](https://github.com/Mirroxyz/KPI/commit/066b9d6) |
+| 2 | У штрафній гілці AI-вихід не містив явної гарантії відсутності викликів `BookRepository` і `ReservationRepository`. | [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) · критерій у `spec.md` | [`066b9d6`](https://github.com/Mirroxyz/KPI/commit/066b9d6) |
+| 3 | AI-вихід розміщував аудит в окремому `AUDIT.md`, хоча вхідний контракт вимагав розділ аудиту в `spec.md`. | [`ai/02-review-feedback.md`](./ai/02-review-feedback.md) · критерій у `spec.md` | [`c9bf873`](https://github.com/Mirroxyz/KPI/commit/c9bf873) |
 
 ## 3. Ключове рішення
 
@@ -25,8 +25,8 @@ ER-сутність у Lab 3. Це зберігає межі вхідної мо
 
 - `spec.md` містить два сценарії, критерії прийняття та трасування до Lab 2.
 - Учасники перевірені проти `lab1/er-model.mmd`: `MEMBER`, `BOOK`,
-  `RESERVATION`; зайві `BOOK_COPY` і `LOAN` виключені в
-  [`AUDIT.md`](./AUDIT.md).
+  `RESERVATION`; зайві `BOOK_COPY` і `LOAN` виключені в розділі
+  `Аудит та трасування` у `spec.md`.
 - Рендер відтворено командами Mermaid CLI з `spec.md`; обидві команди
   завершилися успішно й оновили SVG у [`lab3/`](.).
 - `git diff --check` пройшов без помилок; історія містить базовий,
