@@ -1,4 +1,5 @@
 sequenceDiagram
+    %% Lab 2 scenario 3: Member reserves an available book
     autonumber
     actor Member
     participant UI as Reservation UI
@@ -31,6 +32,7 @@ sequenceDiagram
         Reservations-->>Service: RESERVATION(reservationId, status = active)
         deactivate Reservations
         Service-->>UI: reservationCreated(reservationId)
+        Note over Service,Reservations: Reservation is persisted only after both checks pass
     else book is unavailable
         Service-->>UI: rejectReservation("BOOK unavailable")
     end

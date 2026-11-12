@@ -1,4 +1,5 @@
 sequenceDiagram
+    %% Lab 2 scenario 4: Member with an unpaid fine cannot reserve a book
     autonumber
     actor Member
     participant UI as Reservation UI
@@ -24,6 +25,7 @@ sequenceDiagram
     alt outstanding fine exists
         Service-->>UI: rejectReservation(reason, fineAmount)
         UI-->>Member: displayOutstandingFine(fineAmount)
+        Note over Service,Reservations: ReservationRepository is not called
     else no outstanding fine
         Service->>Books: findAvailableBook(bookId)
         activate Books
