@@ -25,7 +25,7 @@ sequenceDiagram
     alt outstanding fine exists
         Service-->>UI: rejectReservation(reason, fineAmount)
         UI-->>Member: displayOutstandingFine(fineAmount)
-        Note over Service,Reservations: ReservationRepository is not called
+        Note over Service,Reservations: No BookRepository or ReservationRepository call in this branch
     else no outstanding fine
         Service->>Books: findAvailableBook(bookId)
         activate Books

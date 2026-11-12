@@ -32,7 +32,7 @@ sequenceDiagram
         Reservations-->>Service: RESERVATION(reservationId, status = active)
         deactivate Reservations
         Service-->>UI: reservationCreated(reservationId)
-        Note over Service,Reservations: Reservation is persisted only after both checks pass
+        Note over Service,Reservations: Persistence follows session, member, and book checks
     else book is unavailable
         Service-->>UI: rejectReservation("BOOK unavailable")
     end
